@@ -11,7 +11,7 @@ mockServer(端口，数据转化接口，用于把数据统一二次处理，再
 创建 mock-server.js 并使用 node 运行即可
 
 ```
-const mockServer = require('@dyb881/mock-server');
+const mockServer = require('@dyb881/mock-server').default;
 
 const tableInfo = {
   id: '@id',
@@ -35,5 +35,4 @@ mockServer('8090', (data, length) => {
   .get('/getTableList', tableList) // 注册接口
   .get('/getTableInfo', tableInfo) // 注册接口
   .init();
-
 ```
