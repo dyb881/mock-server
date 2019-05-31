@@ -1,6 +1,6 @@
 {
   "name": "@dyb881/mock-server",
-  "version": "0.1.8",
+  "version": "0.1.9",
   "description": "mockjs + express 快捷创建模拟数据接口",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
