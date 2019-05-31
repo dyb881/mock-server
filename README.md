@@ -27,7 +27,7 @@ mockServer('8090', data => ({
     const pageSize = req.param('pageSize') || 10;
     const pageNum = req.param('pageNum') || 1;
     return {
-      `list|${pageSize}`: [tableInfo],
+      [`list|${pageSize}`]: [tableInfo],
       total: 100,
       pageNum
     }
