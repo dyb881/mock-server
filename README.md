@@ -17,13 +17,12 @@ const tableInfo = {
   Description: '@ctitle(50)',
 };
 
-// 初始化
-mockServer('8090', data => ({
+mockServer(data => ({
   code: 0,
   msg: '模拟数据',
   data,
 }))
-  .get('/getTableList', req => {
+  .get('/api/getTableList', req => {
     const pageSize = req.param('pageSize') || 10;
     const pageNum = req.param('pageNum') || 1;
     return {
@@ -31,7 +30,7 @@ mockServer('8090', data => ({
       total: 100,
       pageNum
     }
-  }) // 注册接口，根据请求参数作出处理，并返回 data
-  .get('/getTableInfo', tableInfo) // 注册接口，直接传入 data
-  .init();
+  })
+  .get('/api/getTableInfo', tableInfo)
+  .init(80);
 ```
