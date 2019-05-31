@@ -1,29 +1,25 @@
 import express from 'express';
+import cors from 'cors';
 import Mock from 'mockjs';
-import os from 'os';
+import ip from 'ip';
 
 const app = express();
+
+app.use(cors());
 
 /**
  * 模拟数据服务
  */
-const mockServer = (port: string, template: (...arg: any[]) => any) => {
-  const init = () => {
-    app.use(function(_req, res, next) {
-      res.header('Access-Control-Allow-Origin', '*');
-      res.header('Access-Control-Allow-Methods', 'PUT, GET, POST, DELETE, OPTIONS');
-      res.header('Access-Control-Allow-Headers', 'X-Requested-With');
-      res.header('Access-Control-Allow-Headers', 'Content-Type');
-      next();
-    });
-
-    app.listen(port);
-
-    console.log(`运行模拟数据接口：http://${getIPAdress()}:${port}`);
-  };
-
+const mockServer = (template: (...arg: any[]) => any) => {
   const mock: any = {
-    init,
+    init: (port = 80) => {
+      const server = app.listen(port, function() {
+        const { port = 80 } = server.address() as any;
+        let msg = `运行模拟数据接口：http://${ip.address()}`;
+        if (+port !== 80) msg += `${msg}:${port}`;
+        console.log(msg);
+      });
+    },
   };
 
   const create = (type: string) => {
@@ -43,20 +39,6 @@ const mockServer = (port: string, template: (...arg: any[]) => any) => {
   create('delete');
 
   return mock;
-};
-
-// 获取IP地址
-const getIPAdress = () => {
-  var interfaces = os.networkInterfaces();
-  for (var devName in interfaces) {
-    var iface = interfaces[devName];
-    for (var i = 0; i < iface.length; i++) {
-      var alias = iface[i];
-      if (alias.family === 'IPv4' && alias.address !== '127.0.0.1' && !alias.internal) {
-        return alias.address;
-      }
-    }
-  }
 };
 
 export default mockServer;
