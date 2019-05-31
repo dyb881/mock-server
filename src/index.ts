@@ -27,9 +27,10 @@ const mockServer = (port: string, template: (...arg: any[]) => any) => {
   };
 
   const create = (type: string) => {
-    mock[type] = (path: string, ...arg: any[]) => {
-      app[type](path, (_req: Request, res: any) => {
-        res.json(Mock.mock(template(...arg)));
+    mock[type] = (path: string, fun: any, ...arg: any[]) => {
+      app[type](path, (req: Request, res: any) => {
+        let templateArg = typeof fun === 'function' ? fun(req, ...arg) : [fun, ...arg];
+        res.json(Mock.mock(template(...templateArg)));
       });
       return mock;
     };

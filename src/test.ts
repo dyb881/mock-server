@@ -12,13 +12,17 @@ const tableList = {
 };
 
 // 初始化
-mockServer('8090', (data, length) => {
-  return {
-    code: 0,
-    msg: '模拟数据',
-    [length ? `data|${length}` : 'data']: length ? [data] : data,
-  };
-})
-  .get('/getTableList', tableList) // 注册接口
-  .get('/getTableInfo', tableInfo) // 注册接口
+mockServer('8090', data => ({
+  code: 0,
+  msg: '模拟数据',
+  data,
+}))
+  .get('/getTableList', (req: any) => {
+    const pageNum = req.param('pageNum');
+    return {
+      ...tableList,
+      pageNum,
+    };
+  }) // 注册接口，根据请求参数作出处理，并返回 data
+  .get('/getTableInfo', tableInfo) // 注册接口，直接传入 data
   .init();
