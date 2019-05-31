@@ -32,8 +32,7 @@ mockServer(async data => {
   };
 })
   .get('/api/getTableList', async req => {
-    const pageSize = req.param('pageSize') || 10;
-    const pageNum = req.param('pageNum') || 1;
+    const { pageSize = 10, pageNum = 1 } = req.query;
     await sleep(500); // 对应接口延时 0.5秒
     return {
       [`list|${pageSize}`]: [tableInfo],
